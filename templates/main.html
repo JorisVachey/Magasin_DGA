@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion - DGA ERP{% endblock %}
+
+{% block content %}
+    <h1>Bienvenue au magasin du departement {{ user["dept_nom"] }} {{ user["pseudo"] }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Article</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>{% for produit in produits %}
+            <tr>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.prix }} €</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

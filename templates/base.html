@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}DGA ERP{% endblock %}</title>
+    {% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    {% endblock %}
+</head>
+<body>
+    {% block navbar %}
+    <nav class="navbar">
+        <div class="nav-brand">
+            DGA | ERP
+        </div>
+
+        <div class="nav-user">
+                <div class="user-details">
+                    <span class="role-badge">{{ session['role'] }}</span>
+                    <span class="user-name">{{ session['pseudo'] }}</span>
+                    <span class="dept-name">({{ session.get('dept_nom', 'Non assigné') }})</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Déconnexion</a>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+{% block footer %}
+    <footer>
+        Système d'Achat de la DGA - Usage Interne Uniquement
+    </footer>
+{% endblock %}
+</body>
+</html>

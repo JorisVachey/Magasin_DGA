@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion - DGA ERP{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+{% endblock %}
+{% block navbar %}{% endblock %}
+{% block content %}        
+        <div class="login-card">
+            <h2>DGA ERP</h2>
+            
+            <form method="POST">
+                <input type="text" name="pseudo" placeholder="Nom d'utilisateur" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}

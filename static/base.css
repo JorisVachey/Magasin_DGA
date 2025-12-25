@@ -1,0 +1,141 @@
+/* --- GLOBAL --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Gris très clair pro */
+    margin: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- NAVBAR DGA --- */
+.navbar {
+    background-color: #1a2533; /* Bleu nuit DGA */
+    color: white;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 4px solid;
+    /* Liseré Tricolore en haut */
+    border-image: linear-gradient(to right, #002654 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%) 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-brand {
+    font-weight: bold;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+}
+
+.security-level {
+    font-size: 0.6em;
+    background-color: #c0392b;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-left: 10px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+/* --- INFO UTILISATEUR --- */
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9em;
+}
+
+.role-badge {
+    background-color: #34495e;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.btn-logout {
+    background-color: #c0392b; /* Rouge sombre */
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 2px;
+    font-size: 0.9em;
+    transition: background 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #e74c3c;
+}
+
+/* --- CONTENU --- */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 90%;
+    flex: 1; /* Pousse le footer vers le bas */
+}
+
+h1, h2 {
+    color: #002654;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+/* --- TABLES --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+th {
+    background-color: #002654;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+.alert-error { background-color: #f2dede; color: #a94442; border-color: #ebccd1; }
+.alert-success { background-color: #dff0d8; color: #3c763d; border-color: #d6e9c6; }
+
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 0.8em;
+    color: #7f8c8d;
+    background-color: #ecf0f1;
+    border-top: 1px solid #bdc3c7;
+}

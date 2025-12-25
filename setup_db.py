@@ -1,5 +1,5 @@
 import sqlite3
-
+from hashlib import sha256
 def creer_tables() -> bool:
     try:
         
@@ -31,6 +31,7 @@ def creer_tables() -> bool:
                 pseudo TEXT NOT NULL UNIQUE,
                 role TEXT NOT NULL CHECK(role IN ("Admin", "Employe", "Manager")),
                 departement_id INTEGER,
+                mdp TEXT,
                 FOREIGN KEY (departement_id) REFERENCES Departements(id)
             );
         """)
@@ -85,15 +86,15 @@ def initialiser_bd():
         # --- Utilisateurs ---
 
         utilisateurs = [
-            ("Benjamin Granet", "Admin", "Haute-Technologie"),
-            ("Paul Boissonade", "Employe", "Logistique"),
-            ("Alice Dupont", "Manager", "Cyber"), 
-            ("Joris Vachey", "Employe", "Haute-Technologie")
+            ("Benjamin Granet", "Admin",sha256("1234".encode()).hexdigest(), "Haute-Technologie"),
+            ("Paul Boissonade", "Employe",sha256("JeSuisPaul".encode()).hexdigest(), "Logistique"),
+            ("Alice Dupont", "Manager",sha256("MDPAlice".encode()).hexdigest(), "Cyber"), 
+            ("Joris Vachey", "Employe",sha256("Siroj1234".encode()).hexdigest(), "Haute-Technologie")
         ]
         
         curseur.executemany("""
-            INSERT OR IGNORE INTO Utilisateurs (pseudo, role, departement_id)
-            VALUES (?, ?, (SELECT id FROM Departements WHERE nom = ?));
+            INSERT OR IGNORE INTO Utilisateurs (pseudo, role, mdp, departement_id)
+            VALUES (?, ?,?, (SELECT id FROM Departements WHERE nom = ?));
         """, utilisateurs)
 
         # --- Produits ---
@@ -119,6 +120,14 @@ def initialiser_bd():
         if connexion:
             connexion.close()
 
+def initialisation_complete() -> bool:
+    if creer_tables():
+        initialiser_bd()
+        return True
+    else:
+        creer_tables()
+        initialiser_bd()
+        return True
+
 if __name__ == "__main__":
-    creer_tables()
-    initialiser_bd()
+    initialisation_complete()
