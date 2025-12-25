@@ -70,7 +70,55 @@ def creer_tables() -> bool:
     finally:
         if connexion:
             connexion.close()
+            
+def initialiser_bd():
+    try:
+        connexion = sqlite3.connect('DGA_ERP.db')
+        curseur = connexion.cursor()
+        curseur.execute("PRAGMA foreign_keys = ON;")
 
-# Pour tester :
+        # --- Départements ---
+        
+        departements = [("Haute-Technologie",), ("Logistique",), ("Cyber",)]
+        curseur.executemany("INSERT OR IGNORE INTO Departements (nom) VALUES (?);", departements)
+
+        # --- Utilisateurs ---
+
+        utilisateurs = [
+            ("Benjamin Granet", "Admin", "Haute-Technologie"),
+            ("Paul Boissonade", "Employe", "Logistique"),
+            ("Alice Dupont", "Manager", "Cyber"), 
+            ("Joris Vachey", "Employe", "Haute-Technologie")
+        ]
+        
+        curseur.executemany("""
+            INSERT OR IGNORE INTO Utilisateurs (pseudo, role, departement_id)
+            VALUES (?, ?, (SELECT id FROM Departements WHERE nom = ?));
+        """, utilisateurs)
+
+        # --- Produits ---
+        
+        produits = [
+            ("Supercalculateur Quantum", "Ordinateur quantique", 1500000.0, 2, "Haute-Technologie"),
+            ("Drone de surveillance", "Autonomie 48h", 2500.0, 50, "Cyber"),
+            ("Camion Blindé", "Transport sécurisé", 85000.0, 5, "Logistique"),
+            ("Pare-feu IA", "Protection avancée", 500.0, 100, "Cyber")
+        ]
+
+        curseur.executemany("""
+            INSERT INTO Produits (nom, description, prix, quantite_stock, departement_id)
+            VALUES (?, ?, ?, ?, (SELECT id FROM Departements WHERE nom = ?))
+        """, produits)
+
+        connexion.commit()
+        print("Données de test initialisées.")
+
+    except sqlite3.Error as e:
+        print(f"Erreur d'initialisation : {e}")
+    finally:
+        if connexion:
+            connexion.close()
+
 if __name__ == "__main__":
     creer_tables()
+    initialiser_bd()
