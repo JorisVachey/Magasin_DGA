@@ -1,26 +1,84 @@
 {% extends "base.html" %}
 
-{% block title %}Connexion - DGA ERP{% endblock %}
+{% block title %}Tableau de Bord - DGA ERP{% endblock %}
 
 {% block content %}
-    <h1>Bienvenue au magasin du departement {{ user["dept_nom"] }} {{ user["pseudo"] }}</h1>
+    <h1>Magasin : {{ user["dept_nom"] }} ({{ user["pseudo"] }})</h1>
+
+    <div class="toolbar">
+        <form method="GET" action="{{ url_for('main') }}" id="search-form" class="search-form">
+            <input type="text" 
+                   name="q" 
+                   id="search-input"
+                   class="search-input"
+                   placeholder="Rechercher (nom ou réf)..." 
+                   value="{{ search_query }}" 
+                   oninput="recherche()">
+
+            <select name="sort" onchange="this.form.submit()" class="sort-select">
+                <option value="nom" {% if current_sort == 'nom' %}selected{% endif %}>Trier par Nom</option>
+                <option value="prix" {% if current_sort == 'prix' %}selected{% endif %}>Trier par Prix</option>
+                <option value="quantite" {% if current_sort == 'quantite' %}selected{% endif %}>Trier par Stock</option>
+            </select>
+            
+            <button type="submit" class="btn-logout btn-filter">Filtrer</button>
+        </form>
+
+        <div class="actions-group">
+            <a href="{{ url_for('voir_panier') }}" class="btn-logout btn-panier">
+                Panier ({{ session.get('panier', {})|length }})
+            </a>
+
+            {% if session['role'] in ['Admin', 'Manager'] %}
+                <a href="{{ url_for('ajouter_produit') }}" class="btn-logout btn-add">+ Ajouter un produit</a>
+            {% endif %}
+        </div>
+    </div>
+
     <table>
         <thead>
             <tr>
                 <th>Référence</th>
                 <th>Nom</th>
                 <th>Fabricant</th>
+                <th>Stock</th>
                 <th>Prix</th>
+                <th>Actions</th>
             </tr>
         </thead>
-        <tbody>{% for produit in produits %}
+        <tbody>
+            {% for produit in produits %}
             <tr>
                 <td>{{ produit.reference }}</td>
                 <td>{{ produit.nom }}</td>
                 <td>{{ produit.fabricant }}</td>
+                <td><strong>{{ produit.quantite_stock }}</strong></td>
                 <td>{{ produit.prix }} €</td>
+                <td>
+                    {% set panier = session.get('panier', {}) %}
+                    {% set qty_in_cart = panier.get(produit.id|string, 0) %}
+                    
+                    {% if qty_in_cart >= produit.quantite_stock %}
+                        <span class="stock-rupture" title="Stock max dans le panier">Rupture</span>
+                    {% else %}
+                        <a href="{{ url_for('ajouter_panier', id=produit.id) }}" class="link-add-cart">Ajouter au panier</a>
+                    {% endif %}
+
+                    {% if session['role'] in ['Admin', 'Manager'] %}
+                        | <a href="{{ url_for('modifier_produit', id=produit.id) }}" class="link-modify">Modifier</a> | 
+                        <a href="{{ url_for('supprimer_produit', id=produit.id) }}" 
+                           class="link-delete" 
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce produit ?')">Supprimer</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="empty-table">Aucun produit trouvé.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script src="{{ url_for('static', filename='recherche.js') }}"></script>
 {% endblock %}

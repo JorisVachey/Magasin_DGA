@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Panier - DGA ERP{% endblock %}
+
+{% block content %}
+    <h1>Mon Panier</h1>
+
+    {% if produits %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix Unitaire</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in produits %}
+                <tr>
+                    <td>{{ item.nom }}</td>
+                    <td>{{ item.prix }} €</td>
+                    <td>{{ item.quantite }}</td>
+                    <td>{{ item.subtotal }} €</td>
+                    <td>
+                        <a href="{{ url_for('supprimer_du_panier', id=item.id) }}" class="link-remove">Retirer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="3" class="total-label">Total Général :</td>
+                    <td colspan="2">{{ total }} €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-actions">
+            <a href="{{ url_for('main') }}" class="btn-logout btn-continue">Continuer mes achats</a>
+            <a href="{{ url_for('valider_panier') }}" class="btn-logout btn-validate">Valider la commande</a>
+        </div>
+    {% else %}
+        <p>Votre panier est vide.</p>
+        <a href="{{ url_for('main') }}" class="btn-logout btn-return">Retour au magasin</a>
+    {% endif %}
+{% endblock %}

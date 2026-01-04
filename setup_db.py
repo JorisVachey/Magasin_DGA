@@ -3,20 +3,14 @@ from hashlib import sha256
 def creer_tables() -> bool:
     try:
         
-        # --- CONNEXION ---
-        
         connexion = sqlite3.connect('DGA_ERP.db')
         curseur = connexion.cursor()
-        
-        # --- DELETION DE LA BASE ---
         
         curseur.execute("PRAGMA foreign_keys = ON;")
         curseur.execute("DROP TABLE IF EXISTS Commandes;")
         curseur.execute("DROP TABLE IF EXISTS Produits;")
         curseur.execute("DROP TABLE IF EXISTS Utilisateurs;")
         curseur.execute("DROP TABLE IF EXISTS Departements;")
-
-        # --- CRÉATION DE LA BASE---
 
         curseur.execute("""
             CREATE TABLE Departements (
@@ -79,12 +73,8 @@ def initialiser_bd():
         curseur = connexion.cursor()
         curseur.execute("PRAGMA foreign_keys = ON;")
 
-        # --- Départements ---
-        
         departements = [("Haute-Technologie",), ("Logistique",), ("Cyber",)]
         curseur.executemany("INSERT OR IGNORE INTO Departements (nom) VALUES (?);", departements)
-
-        # --- Utilisateurs ---
 
         utilisateurs = [
             ("Benjamin Granet", "Admin",sha256("1234".encode()).hexdigest(), "Haute-Technologie"),
@@ -102,8 +92,6 @@ def initialiser_bd():
         
         produits = [
             ("Supercalculateur Quantum", "IBM", "Q-SYSTEM-1", 1500000.0, 2, "Haute-Technologie"),
-            ("Drone de surveillance", "DJI", "MAVIC-ENT-3", 2500.0, 50, "Cyber"),
-            ("Camion Blindé", "Renault Trucks", "DEFENSE-K", 85000.0, 5, "Logistique"),
             ("Pare-feu IA", "Cisco", "FIREPOWER-X", 500.0, 100, "Cyber"),
             ("Serveur Rack 2U", "Dell", "POWEREDGE-R750", 4500.0, 20, "Haute-Technologie"),
             ("Casque VR Tactique", "Microsoft", "HOLOLENS-MIL", 3200.0, 15, "Haute-Technologie"),

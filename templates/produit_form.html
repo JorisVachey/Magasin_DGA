@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ action }} un produit</h1>
+    <form method="POST" class="form-product">
+        <input type="text" name="nom" placeholder="Nom du produit" value="{{ produit.nom if produit else '' }}" required>
+        <input type="text" name="fabricant" placeholder="Fabricant" value="{{ produit.fabricant if produit else '' }}" required>
+        <input type="number" name="prix" step="0.01" placeholder="Prix (€)" value="{{ produit.prix if produit else '' }}" required>
+        <input type="number" name="stock" placeholder="Quantité en stock" value="{{ produit.quantite_stock if produit else '' }}" required>
+        <button type="submit" class="btn-logout btn-save">Enregistrer</button>
+        <a href="{{ url_for('main') }}">Annuler</a>
+    </form>
+{% endblock %}
