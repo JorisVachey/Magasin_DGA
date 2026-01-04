@@ -40,7 +40,8 @@ def creer_tables() -> bool:
             CREATE TABLE Produits (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nom TEXT NOT NULL,
-                description TEXT,
+                fabricant TEXT,
+                reference TEXT, 
                 prix FLOAT NOT NULL CHECK(prix >= 0),
                 quantite_stock INTEGER NOT NULL CHECK(quantite_stock >= 0),
                 departement_id INTEGER,
@@ -100,15 +101,19 @@ def initialiser_bd():
         # --- Produits ---
         
         produits = [
-            ("Supercalculateur Quantum", "Ordinateur quantique", 1500000.0, 2, "Haute-Technologie"),
-            ("Drone de surveillance", "Autonomie 48h", 2500.0, 50, "Cyber"),
-            ("Camion Blindé", "Transport sécurisé", 85000.0, 5, "Logistique"),
-            ("Pare-feu IA", "Protection avancée", 500.0, 100, "Cyber")
+            ("Supercalculateur Quantum", "IBM", "Q-SYSTEM-1", 1500000.0, 2, "Haute-Technologie"),
+            ("Drone de surveillance", "DJI", "MAVIC-ENT-3", 2500.0, 50, "Cyber"),
+            ("Camion Blindé", "Renault Trucks", "DEFENSE-K", 85000.0, 5, "Logistique"),
+            ("Pare-feu IA", "Cisco", "FIREPOWER-X", 500.0, 100, "Cyber"),
+            ("Serveur Rack 2U", "Dell", "POWEREDGE-R750", 4500.0, 20, "Haute-Technologie"),
+            ("Casque VR Tactique", "Microsoft", "HOLOLENS-MIL", 3200.0, 15, "Haute-Technologie"),
+            ("Conteneur Sécurisé", "Maersk", "SECURE-BOX-20", 1200.0, 30, "Logistique"),
+            ("Antenne Satellite", "Thales", "SAT-COM-V2", 15000.0, 8, "Cyber")
         ]
 
         curseur.executemany("""
-            INSERT INTO Produits (nom, description, prix, quantite_stock, departement_id)
-            VALUES (?, ?, ?, ?, (SELECT id FROM Departements WHERE nom = ?))
+            INSERT INTO Produits (nom, fabricant, reference, prix, quantite_stock, departement_id)
+            VALUES (?, ?, ?, ?, ?, (SELECT id FROM Departements WHERE nom = ?))
         """, produits)
 
         connexion.commit()

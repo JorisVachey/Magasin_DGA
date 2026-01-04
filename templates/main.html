@@ -7,13 +7,17 @@
     <table>
         <thead>
             <tr>
-                <th>Article</th>
+                <th>Référence</th>
+                <th>Nom</th>
+                <th>Fabricant</th>
                 <th>Prix</th>
             </tr>
         </thead>
         <tbody>{% for produit in produits %}
             <tr>
+                <td>{{ produit.reference }}</td>
                 <td>{{ produit.nom }}</td>
+                <td>{{ produit.fabricant }}</td>
                 <td>{{ produit.prix }} €</td>
             </tr>
             {% endfor %}

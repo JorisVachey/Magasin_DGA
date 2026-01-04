@@ -41,8 +41,8 @@ def ajouter_produit(nom, description, prix, stock, nom_departement) -> bool:
         curseur.execute("PRAGMA foreign_keys = ON;")
 
         query = """
-            INSERT INTO Produits (nom, description, prix, quantite_stock, departement_id)
-            VALUES (?, ?, ?, ?, (SELECT id FROM Departements WHERE nom = ?))
+            INSERT INTO Produits (nom, fabricant, reference, prix, quantite_stock, departement_id)
+            VALUES (?, ?, ?, ?, ?, (SELECT id FROM Departements WHERE nom = ?))
         """
         
         curseur.execute(query, (nom, description, prix, stock, nom_departement))
@@ -86,7 +86,7 @@ def get_users():
 def get_produits():
     connexion = get_db_connection()
     products = connexion.execute("""
-        SELECT P.nom, P.description, P.prix, P.quantite_stock, D.nom as dept_nom
+        SELECT P.nom, P.fabricant, P.reference, P.prix, P.quantite_stock, D.nom as dept_nom
         FROM Produits P
         JOIN Departements D ON P.departement_id = D.id
     """).fetchall()
@@ -95,7 +95,7 @@ def get_produits():
 
 def get_produits_id_dpt(id):
     connexion = get_db_connection()
-    produits = connexion.execute("""select P.nom, P.prix, P.quantite_stock FROM Produits as P JOIN Departements D ON D.id = P.departement_id WHERE D.id = ?""" , (id,)).fetchall()
+    produits = connexion.execute("""select P.nom, P.fabricant, P.reference, P.prix, P.quantite_stock FROM Produits as P JOIN Departements D ON D.id = P.departement_id WHERE D.id = ?""" , (id,)).fetchall()
     connexion.close()
     return produits
 
