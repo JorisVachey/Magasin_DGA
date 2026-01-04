@@ -86,7 +86,7 @@ h1, h2 {
     padding-bottom: 10px;
 }
 
-/* --- TABLES --- */
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
