@@ -27,7 +27,7 @@ Ce projet a été rélisé en vu de l'entretien du 16/01/2026
 * **Sécurité des mots de passe** : Utilisation de l'algorithme **SHA-256** pour hacher les mots de passe avant le stockage en base de données.
 * **Interface** : Utilisation de CSS pur pour un design sobre et de JavaScript pour une fonctionnalité de recherche dynamique.
 
-## ⚠️ Limites connues
+## Limites connues
 
 * **Gestion des sessions** : Les sessions sont stockées côté client via des cookies signés.
 * **Filtrage par département** : Les utilisateurs ne peuvent voir que les produits liés à leur département, ce qui limite la visibilité globale de l'inventaire.
